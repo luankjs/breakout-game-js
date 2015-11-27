@@ -29,12 +29,41 @@
 			var dx = 2;
 			var dy = -2;
 			var ballRadius = 10;
+			var paddleWidth = 75;
+			var paddleHeight = 10;
+			var paddleX = (canvas.width-paddleWidth)/2;
+			var rightPressed = false;
+			var leftPressed = false;
 
-			//moving the ball
+			document.addEventListener("keydown", keyDownHandler, false);
+			document.addEventListener("keyup", keyUpHandler, false);
+
+			//Handling user controlls
+			function keyDownHandler(e) {
+				if (e.keyCode == 39) {
+					rightPressed = true;
+				} 
+				else if (e.keyCode == 37) {
+					leftPressed = true;
+				}
+			}
+
+			//Handling user controlls
+			function keyUpHandler(e) {
+				if (e.keyCode == 39) {
+					rightPressed = false;
+				}
+				else if (e.keyCode == 37) {
+					leftPressed = false;
+				}
+			}
+
 			function draw() {
 				ctx.clearRect(0, 0, canvas.width, canvas.height);
 				drawBall();
+				drawPaddle();
 
+				//Detect bounds and moving the ball
 				if (x + dx > (canvas.width - ballRadius) || x + dx < ballRadius) {
 					dx = -dx;
 				}
@@ -45,11 +74,29 @@
 
 		    x += dx;
 				y += dy;
+
+				//Moving paddle
+				if(rightPressed && paddleX < canvas.width-paddleWidth) {
+				    paddleX += 5;
+				}
+				else if(leftPressed && paddleX > 0) {
+				    paddleX -= 5;
+				}
 			}
 
+			//drawing the ball
 			function drawBall() {
 				ctx.beginPath();
 				ctx.arc(x, y, ballRadius, 0, Math.PI*2);
+				ctx.fillStyle = "#0095DD";
+				ctx.fill();
+				ctx.closePath();
+			}
+
+			//drawing the paddle
+			function drawPaddle() {
+				ctx.beginPath();
+				ctx.rect(paddleX, (canvas.height-paddleHeight), paddleWidth, paddleHeight);
 				ctx.fillStyle = "#0095DD";
 				ctx.fill();
 				ctx.closePath();
