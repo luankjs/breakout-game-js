@@ -50,6 +50,8 @@
 			var brickOffsetTop = 30;
 			var brickOffsetLeft = 30;
 
+			var score = 0;
+
 			//Creating bricks
 			var bricks = [];
 			for(c = 0; c < brickColumnCount; c++) {
@@ -82,6 +84,7 @@
 				}
 			}
 
+			//detecting collison with bricks
 			function collisionDetection() {
 	    	for(c=0; c<brickColumnCount; c++) {
 	        for(r=0; r<brickRowCount; r++) {
@@ -90,6 +93,7 @@
 	            if(x > b.x && x < b.x+brickWidth && y > b.y && y < b.y+brickHeight) {
 	              dy = -dy;
 	              b.status = 0;
+	              score++;
 	            }
           	}
 	        }
@@ -101,6 +105,7 @@
 				drawBricks();
 				drawBall();
 				drawPaddle();
+				drawScore();
 				collisionDetection();
 
 				//Detect bounds and moving the ball
@@ -130,6 +135,13 @@
 				else if(leftPressed && paddleX > 0) {
 				    paddleX -= 5;
 				}
+			}
+
+			//drawing score
+			function drawScore() {
+		    ctx.font = "16px Arial";
+		    ctx.fillStyle = "#0095DD";
+		    ctx.fillText("Score: "+score, 8, 20);
 			}
 
 			//drawing the ball
